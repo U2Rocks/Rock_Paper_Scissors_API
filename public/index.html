@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Rock Paper Scissors API</title>
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Verdana, sans-serif;
+            background-color: #34deeb;
+            color: #fff;
+        }
+        .header-title {
+            text-align: center;
+            font-size: 1.75em;
+            background-color: #24a0a4;
+            padding: 10px;
+            margin-top: 0px;
+        }
+        .content-panels {
+            margin-top: 3%;
+            margin-left: 2%;
+            margin-right: 2%;
+            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .content-panel {
+            border-radius: 10px;
+            background-color: #9cfcff;
+            padding: 10px;
+            color: black;
+            flex: 0 24%;
+            height: 100px;
+            margin-bottom: 2%;
+        }
+        .content-panel:hover {
+            border: 0.5px solid white;
+            filter: drop-shadow(1px 1px 1px white);
+        }
+        .content-footer {
+            padding-top: 10px;
+            padding-bottom: 10px;
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            background-color: #cdfdff;
+            color: black;
+        }
+        .link-wrapper {
+            float: left;
+            margin-right: 10px;
+            margin-left: 5px;
+        }
+        .link-wrapper:after {
+            content: " |";
+        }
+        .output-block {
+            text-align: center;
+            background-color: #cdfdff;
+            color: black;
+            z-index: 3;
+        }
+        .hidden {
+            display: none;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="content-wrapper">
+            <header>
+               <div class="header-title">
+                 <h1 id="page-title">Rock Paper Api</h1>
+               </div>
+            </header>
+            <div class="content-panels">
+              <div class="content-panel" id="panelone">
+                <p>Check All Games</p>
+                <button id="panelonebutton">Query Api</button>
+              </div>
+              <div class="content-panel" id="paneltwo">
+                <p>Check All Players</p>
+                <button id="paneltwobutton">Query Api</button>
+              </div>
+              <div class="content-panel" id="panelthree">
+                <p>List All Completed Games</p>
+                <button id="panelthreebutton">Query Api</button>
+              </div>
+              <div class="content-panel" id="panelfour">
+                <p>List All Ongoing Games</p>
+                <button id="panelfourbutton">Query Api</button>
+              </div>
+              <div class="content-panel" id="panelfive">
+                <p>Show Leaderboard</p>
+                <button id="panelfivebutton">Query Api</button>
+              </div>
+              <div class="content-panel" id="panelsix">
+                <p>Panel 6</p>
+                <button id="panelsixbutton">Query Api</button>
+              </div>
+            </div>
+            <div class="output-block">
+              <div class="output-div">Test</div>
+            </div>
+            <div class="content-footer">
+              <div class="link-wrapper">Email: kane.marvin@gmail.com</div>
+              <div class="link-wrapper">Github: <a href="https://github.com/U2Rocks">U2Rocks</a></div>
+              <div class="link-wrapper">Phone: 777-777-7777</div>
+            </div>
+          </div>
+          <script>
+            // grab all html elements
+            const panel_six = document.querySelector("panelsix")
+            const panel_six_button = document.querySelector("#panelsixbutton")
+            const panel_five = document.querySelector("panelfive")
+            const panel_five_button = document.querySelector("#panelfivebutton")
+            const panel_four = document.querySelector("panelfour")
+            const panel_four_button = document.querySelector("#panelfourbutton")
+            const panel_three = document.querySelector("panelthree")
+            const panel_three_button = document.querySelector("#panelthreebutton")
+            const panel_two = document.querySelector("paneltwo")
+            const panel_two_button = document.querySelector("#paneltwobutton")
+            const panel_one = document.querySelector("panelone")
+            const panel_one_button = document.querySelector("#panelonebutton")
+            const footer = document.querySelector(".content-footer")
+
+            // get output div from page
+            output_div = document.querySelector(".output-div")
+
+            // function to change outdiv message
+            function Setoutdiv(message){
+            output_div.innerHTML = `<h3>${message}</h3>`
+            }
+
+            // change outdiv message based on input(change to async function and try using promises more)
+            function Display_Output(name){
+                const array = []
+            if (name == "allgame"){
+                fetch("http://127.0.0.1:3000/rockpaper/games/all").then(response => response.json()).then(data => Setoutdiv(JSON.stringify(data)))
+                footer.className += " hidden"
+            }
+            if (name == "allcomplete"){
+                fetch("http://127.0.0.1:3000/rockpaper/games/complete").then(response => response.json()).then(data => Setoutdiv(JSON.stringify(data)))
+                footer.className += " hidden"
+            }
+            if (name == "allplayer"){
+                fetch("http://127.0.0.1:3000/rockpaper/player/all").then(response => response.json()).then(data => Setoutdiv(JSON.stringify(data)))
+                footer.className += " hidden"
+            }
+            if (name == "allongoing"){
+                fetch("http://127.0.0.1:3000/rockpaper/games/incomplete").then(response => response.json()).then(data => Setoutdiv(JSON.stringify(data)))
+                footer.className += " hidden"
+            }
+            if (name == "leaderboard"){
+                fetch("http://127.0.0.1:3000/rockpaper/player/leaderboard").then(response => response.json()).then(data => Setoutdiv(JSON.stringify(data)))
+                footer.className += " hidden"
+            }
+            }
+
+            // define onclick events for all the buttons
+            panel_one_button.addEventListener("click", () => {
+            Display_Output("allgame")
+            })
+
+            panel_two_button.addEventListener("click", () => {
+            Display_Output("allplayer")
+            })
+
+            panel_three_button.addEventListener("click", () => {
+            Display_Output("allcomplete")
+            })
+
+            panel_four_button.addEventListener("click", () => {
+            Display_Output("allongoing")
+            })
+
+            panel_five_button.addEventListener("click", () => {
+            Display_Output("leaderboard")
+            })
+
+            panel_six_button.addEventListener("click", () => {
+            output_div.innerHTML = '<h3>Panel 6</h3>'
+            })
+          </script>
+    </body>
+</html>
